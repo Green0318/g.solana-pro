@@ -35,6 +35,7 @@ describe("track_upload", () => {
     let trackState = await program.account.track.fetch(track.publicKey);
     console.log(`TRACK:", ${String.fromCharCode(...trackState.artist)}, ${String.fromCharCode(...trackState.cid)}, ${trackState.signer} ,_ ${trackState.trackTitle} `)
     console.log(`SIGNER: ${track.publicKey}`);
+    console.log(`SIGNER: ${creator.publicKey}`);
   });
 
 
@@ -51,7 +52,7 @@ describe("track_update",  () => {
           track: track.publicKey,
           signer: creator.publicKey
         },
-        signers: [track]
+        signers: creator instanceof (anchor.Wallet as any) ? [] : [creator]
     }
    );
    let trackState2 = await program.account.track.fetch(track.publicKey);
