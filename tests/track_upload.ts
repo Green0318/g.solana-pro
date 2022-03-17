@@ -2,6 +2,9 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { TrackUpload } from "../target/types/track_upload";
+import fs from 'fs';
+import { IPFS, create } from 'ipfs-core';
+import type { CID } from 'ipfs-core';
 
 const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
 const creator = program.provider.wallet;
@@ -15,11 +18,16 @@ describe("track_upload", () => {
 
   it("Is initialized!", async () => {
     // Add your test here.
- 
-    const cid = utf8.encode("");
-    console.log("cid length", cid.length);
+    const node = await create();
+    const file = fs.readFileSync("tst.png");
+    const file_upload = await node.add({
+      path:"test",
+      content: file.buffer
+    })
+
+    console.log(`UPLOADED CID: ${file_upload.cid.toString()}`)
     const tx = await program.rpc.initialize( 
-      "QmPvAuVdiqteJF82w13sjhjqb4YNSBKohmpiv3G9FoBz4S",
+      file_upload.cid.toString(),
       "BeetLes",
       "Yellow Submarinexx",
       {
