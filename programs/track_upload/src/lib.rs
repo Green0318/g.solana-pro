@@ -9,6 +9,11 @@ pub mod track_upload {
     pub fn initialize(ctx: Context<Initialize>, cid: String, 
         artist: String, title: String) -> Result<()> {
         let track = &mut ctx.accounts.track;
+        // Validate Lengths
+        require!(cid.chars().count() <= 47, TrackError::InvalidCID);
+        require!(artist.chars().count() <= 32, TrackError::TrackTooLong);
+        require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
+
         track.signer = ctx.accounts.creator.key();
         track.artist = artist.as_bytes().to_vec();
         track.cid = cid.as_bytes().to_vec();
@@ -61,5 +66,8 @@ pub struct Track  {
 
 #[error_code]
 pub enum TrackError {
-    UnauthorizedUser
+    UnauthorizedUser,
+    TrackTooLong,
+    ArtistTooLong,
+    InvalidCID,
 }
