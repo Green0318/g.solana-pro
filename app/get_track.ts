@@ -32,7 +32,7 @@ const main = async() => {
 }
 
 main().then(() => {
-  console.log("Uploaded track successfully.")
+  console.log("Downloaded track successfully.")
 });
 
 

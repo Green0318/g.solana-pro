@@ -33,8 +33,7 @@ const main = async() => {
   anchor.setProvider(anchor.Provider.env());
   const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
   const creator = program.provider.wallet;
-  const track = anchor.web3.Keypair.generate();
-
+  const key = new anchor.web3.PublicKey(args.key);
   let cid = args.cid? args.cid : "";
   if (args.path) {
       const node = await create();
@@ -44,9 +43,10 @@ const main = async() => {
         content: file.buffer
       })
       cid = file_upload.cid.toString();
+      await node.stop()
   }
 
-let trackState = await program.account.track.fetch(track.publicKey);
+let trackState = await program.account.track.fetch(key);
 if (trackState.signer != creator.publicKey) {
     console.error("Only the original creator of the track can update it.");
     process.exit(1);
@@ -58,13 +58,13 @@ const tx = await program.rpc.update(
   {
   accounts: {
     signer: creator.publicKey,
-    track: track.publicKey,
+    track: key,
   },
   signers: creator instanceof (anchor.Wallet as any) ? [] : [creator]
 });
 console.log("Your transaction signature", tx);
-console.log("Track key", track.publicKey.toString())
-let trackUpdated = await program.account.track.fetch(track.publicKey);
+console.log("Track key", key.toString())
+let trackUpdated = await program.account.track.fetch(key);
 console.log(`Track artist: ${trackUpdated.artist}, cid: ${trackUpdated.cid}, title: ${trackUpdated.trackTitle} `)   
 
 }

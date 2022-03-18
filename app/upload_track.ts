@@ -41,6 +41,7 @@ const main = async() => {
         content: file.buffer
       })
       cid = file_upload.cid.toString();
+      await node.stop();
   }
 //
 const tx = await program.rpc.initialize( 
