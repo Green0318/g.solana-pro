@@ -6,20 +6,26 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 pub mod track_upload {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>, cid: String, artist: String, title: String) -> Result<()> {
+    pub fn initialize(ctx: Context<Initialize>, cid: String, 
+        artist: String, title: String) -> Result<()> {
         let track = &mut ctx.accounts.track;
         track.signer = ctx.accounts.creator.key();
         track.artist = artist.as_bytes().to_vec();
         track.cid = cid.as_bytes().to_vec();
-        track.track_title = "TITLE".as_bytes().to_vec();
+        track.track_title = title.as_bytes().to_vec();
         msg!(&title);
         Ok(())
     }
 
-    pub fn update(ctx: Context<UpdateTrack>, cid: String) -> Result<()> {
+    // Would be prefered to take Option<String> as args but 
+    // running into issues with serialization
+    pub fn update(ctx: Context<UpdateTrack>, cid: String, 
+        artist: String, title: String) -> Result<()> {
         let track = &mut ctx.accounts.track;
         require!(ctx.accounts.signer.key() == track.signer, TrackError::UnauthorizedUser);
-        track.cid = cid.as_bytes().to_vec();
+        if cid.chars().count() > 0 {track.cid = cid.as_bytes().to_vec()};
+        if artist.chars().count() > 0 {track.artist = artist.as_bytes().to_vec()};  
+        if title.chars().count() > 0 {track.track_title = title.as_bytes().to_vec()};      
         Ok(())  
     }
 
