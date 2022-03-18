@@ -18,7 +18,7 @@ pub mod track_upload {
         track.artist = artist.as_bytes().to_vec();
         track.cid = cid.as_bytes().to_vec();
         track.track_title = title.as_bytes().to_vec();
-        msg!(&title);
+
         Ok(())
     }
 
@@ -28,6 +28,11 @@ pub mod track_upload {
         artist: String, title: String) -> Result<()> {
         let track = &mut ctx.accounts.track;
         require!(ctx.accounts.signer.key() == track.signer, TrackError::UnauthorizedUser);
+        // Validate Lengths
+        require!(cid.chars().count() <= 47, TrackError::InvalidCID);
+        require!(artist.chars().count() <= 32, TrackError::TrackTooLong);
+        require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
+
         if cid.chars().count() > 0 {track.cid = cid.as_bytes().to_vec()};
         if artist.chars().count() > 0 {track.artist = artist.as_bytes().to_vec()};  
         if title.chars().count() > 0 {track.track_title = title.as_bytes().to_vec()};      
