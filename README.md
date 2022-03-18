@@ -63,6 +63,11 @@ To update the track we first need to get the uploaded track so it implicitly tes
 To run tests run: 
 `anchor test`
 
+## Anchor
+This was built using the Anchor toolkit. It gives a opinionated structure to the solana program. It providesus several utilities such as `anchor test`, `anchor deploy`, `anchor localnet`. 
+Anchor also provides us utilities in rust to simplify our code by handling lot of the Serialization, deserialization of data, instructions etc. 
+On the web3 side it provides convenient utilities to interact with solana programs without having to interact directly with the idl. It also provides utilities around keypair generation, getting accounts, programs etc. Making it a lot easier to build.
+
 ## Contract Logic
 The contract takes an account for the track that contains the CID, Artist, Track Title, and the signer. 
 #### Initialization
