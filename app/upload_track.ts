@@ -9,7 +9,6 @@ import { IPFS, create, isIPFS } from "ipfs-core";
 import type { CID } from "ipfs-core";
 
 const argv = yargs(process.argv.slice(2))
-  .describe({ key: "Upload a track to IPFS and persist its id to solana" })
   .options({
     cid: { type: "string", default: null, alias: "c" },
     path: { type: "string", default: null, alias: "p" },
