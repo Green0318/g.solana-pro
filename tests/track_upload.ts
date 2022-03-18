@@ -33,18 +33,16 @@ describe("track_upload", () => {
       signers:[track]
     });
     console.log("Your transaction signature", tx);
-    console.log("Track pub key", track.publicKey)
-    let trackState = await program.account.track.fetch(track.publicKey);
-    assert.equal(`${trackState.artist}`, artist);
-    assert.equal(`${trackState.cid}`, cid);
-    assert.equal(`${trackState.trackTitle}`, track_title);
-    console.log(`TRACK:", ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle} `)
     console.log(`Track Key: ${track.publicKey}`);
     console.log(`SIGNER: ${creator.publicKey}`);
   });
-
-
-
+  it("Should match artist, track and cid", async () => {
+    let trackState = await program.account.track.fetch(track.publicKey);
+    assert.equal(`${trackState.artist}`, artist);
+    assert.equal(`${trackState.cid}`, cid);
+    assert.equal(`${trackState.trackTitle}`, track_title);  
+    console.log(`TRACK: ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle} `)  
+  });
 });
 
 const new_cid = "QmPvAuVdiqteJF82w13sjhjqb4YNSBKohmpiv3G9FoBz22";
@@ -65,12 +63,14 @@ describe("track_update",  () => {
         signers: creator instanceof (anchor.Wallet as any) ? [] : [creator]
     }
    );
-   let trackState2 = await program.account.track.fetch(track.publicKey);
+   
+  });
+  it("Should match updated track, title and cid", async () => {
+  let trackState2 = await program.account.track.fetch(track.publicKey);
    assert.equal(`${trackState2.artist}`, new_artist);
    assert.equal(`${trackState2.cid}`, new_cid);
    assert.equal(`${trackState2.trackTitle}`, new_title);
-   console.log(`TRACK:", ${trackState2.artist}, ${trackState2.cid}, ${trackState2.trackTitle} `)   
+   console.log(`TRACK: ${trackState2.artist}, ${trackState2.cid}, ${trackState2.trackTitle} `)   
   });
-  
 })
 
