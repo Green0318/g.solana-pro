@@ -23,7 +23,7 @@ Users can later access their track using the public key of the track.
 Once you have the project deployed and the environment variables set you can interact with it using the CLI.
 
 ## CLI
-
+I have added the CLI scripts to the scripts section in `package.json` making it more convenient to run.
 ### Upload Track
 Uploads a given CID to Solana. Additionaly we can have the utility upload a track to IPFS, and persist the CID to solana. If `--cid` argument is passed then the CID is used. We can instead pass a `--path` argument to upload to IPFS and persist the path. 
 Do make a note of the track key since we will be using this to get the track.
@@ -82,3 +82,18 @@ This would mean that for any production code length verification of the inputs w
 
 #### The update logic
 During update we check to make sure if the call has been signed by the original signer. This is done to ensure others can not modify tracks.
+
+## Missing Stuff
+- Update needs a wallet adapter to sign for the update
+- Downloaded tracks need to be set to their appropriate name by getting track metadata from IPFS
+- Vec types need better length control for any production use as this will cause the account to run out of space.
+
+## Structure
+- Anchor.toml defines the anchor project.
+- package.json defines the node project.
+- tsconfig.json sets up typescript.
+- The `program` directory contains the Rust code for the solana program
+- When we run anchor build - output goes to the target directory
+- Tests are in the `tests` directory
+- The app directory typically is for UI code but I am using it for the CLI code.
+
