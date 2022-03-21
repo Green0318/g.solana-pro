@@ -5,7 +5,8 @@ import { Program } from "@project-serum/anchor";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { TrackUpload } from "../target/types/track_upload";
 import fs from "fs";
-import ipfsAPI from "ipfs-api";
+import { IPFS, create } from "ipfs-core";
+import { concat as uint8ArrayConcat } from "uint8arrays/concat";
 
 const argv = yargs(process.argv.slice(2))
   .describe({ key: "Get the track from Solana and download it." })
@@ -24,12 +25,18 @@ const main = async () => {
     `TRACK: ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle}`
   );
   if (args.download) {
-    const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" });
-    ipfs.files.get(`${trackState.cid}`, function (err, files) {
-      files.forEach((file) => {
-        fs.writeFileSync(file.path, file.content);
-      });
-    });
+    const node = await create();
+    const cid = String(trackState.cid);
+    console.log(`CID: ${cid}`);
+    for await (const file of node.ls(cid)) {
+      console.log(file.path);
+      const chunks = [];
+      for await (const chunk of node.files.read(file.cid)) {
+        chunks.push(chunk);
+      }
+      fs.writeFileSync(file.name, uint8ArrayConcat(chunks).toString());
+    }
+    node.stop();
   }
 };
 

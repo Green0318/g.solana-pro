@@ -35,10 +35,13 @@ const main = async () => {
   if (args.path) {
     const node = await create();
     const file = fs.readFileSync(args.path);
-    const file_upload = await node.add({
-      path: args.path,
-      content: file.buffer,
-    });
+    const file_upload = await node.add(
+      {
+        path: args.path,
+        content: file.buffer,
+      },
+      { wrapWithDirectory: true }
+    );
     cid = file_upload.cid.toString();
     await node.stop();
   }
@@ -46,7 +49,9 @@ const main = async () => {
   let trackState = await program.account.track.fetch(key);
   if (trackState.signer.toString() != signer.publicKey.toString()) {
     console.error("Only the original creator of the track can update it.");
-    console.error(`TRACK signer ${trackState.signer}, Signer: ${signer.publicKey}`);
+    console.error(
+      `TRACK signer ${trackState.signer}, Signer: ${signer.publicKey}`
+    );
     process.exit(1);
   }
   const tx = await program.rpc.update(cid, args.artist, args.title, {

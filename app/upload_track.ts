@@ -8,13 +8,12 @@ import fs from "fs";
 import { IPFS, create, isIPFS } from "ipfs-core";
 import type { CID } from "ipfs-core";
 
-const argv = yargs(process.argv.slice(2))
-  .options({
-    cid: { type: "string", default: null, alias: "c" },
-    path: { type: "string", default: null, alias: "p" },
-    artist: { type: "string", default: "", alias: "a" },
-    title: { type: "string", default: "", alias: "t" },
-  }).argv;
+const argv = yargs(process.argv.slice(2)).options({
+  cid: { type: "string", default: null, alias: "c" },
+  path: { type: "string", default: null, alias: "p" },
+  artist: { type: "string", default: "", alias: "a" },
+  title: { type: "string", default: "", alias: "t" },
+}).argv;
 
 const main = async () => {
   const args = await argv;
@@ -35,10 +34,13 @@ const main = async () => {
   if (args.path) {
     const node = await create();
     const file = fs.readFileSync(args.path);
-    const file_upload = await node.add({
-      path: args.path,
-      content: file.buffer,
-    });
+    const file_upload = await node.add(
+      {
+        path: args.path,
+        content: file.buffer,
+      },
+      { wrapWithDirectory: true }
+    );
     cid = file_upload.cid.toString();
     await node.stop();
   }

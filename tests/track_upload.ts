@@ -68,15 +68,15 @@ describe("track_update", () => {
       },
       signers: [],
     });
-    try {await tx} 
-    catch(err) {
+    try {
+      await tx;
+    } catch (err) {
       // Workaround to chai not matching error
-      expect(err.toString()).contains("Error")
+      expect(err.toString()).contains("Error");
       //expect(err).equal(new Error('Signature verification failed'))
-    };
+    }
     // expect(async () => {await tx}).to.throw();
-
-  })
+  });
   it("Should match updated track, title and cid", async () => {
     let trackState2 = await program.account.track.fetch(track.publicKey);
     assert.equal(`${trackState2.artist}`, new_artist);
