@@ -39,6 +39,7 @@ const main = async () => {
         path: args.path,
         content: file.buffer,
       },
+      // wrap in directory so we can fetch track name later
       { wrapWithDirectory: true }
     );
     cid = file_upload.cid.toString();

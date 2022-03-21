@@ -27,7 +27,7 @@ const main = async () => {
   if (args.download) {
     const node = await create();
     const cid = String(trackState.cid);
-    console.log(`CID: ${cid}`);
+    // load directory and write out each track
     for await (const file of node.ls(cid)) {
       console.log(file.path);
       const chunks = [];
