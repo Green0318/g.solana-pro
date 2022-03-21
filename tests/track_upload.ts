@@ -6,6 +6,7 @@ import fs from "fs";
 import { IPFS, create } from "ipfs-core";
 import type { CID } from "ipfs-core";
 import * as assert from "assert";
+import { expect } from "chai";
 
 const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
 const signer = program.provider.wallet;
@@ -56,6 +57,26 @@ describe("track_update", () => {
       signers: [],
     });
   });
+
+  it("Should not let other signers update tracks", async () => {
+    let trackState = await program.account.track.fetch(track.publicKey);
+    const randomSigner = anchor.web3.Keypair.generate();
+    const tx = program.rpc.update(new_cid, new_artist, new_title, {
+      accounts: {
+        track: track.publicKey,
+        signer: randomSigner.publicKey,
+      },
+      signers: [],
+    });
+    try {await tx} 
+    catch(err) {
+      // Workaround to chai not matching error
+      expect(err.toString()).contains("Error")
+      //expect(err).equal(new Error('Signature verification failed'))
+    };
+    // expect(async () => {await tx}).to.throw();
+
+  })
   it("Should match updated track, title and cid", async () => {
     let trackState2 = await program.account.track.fetch(track.publicKey);
     assert.equal(`${trackState2.artist}`, new_artist);
