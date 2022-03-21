@@ -18,7 +18,7 @@ pub mod track_upload {
         require!(artist.chars().count() <= 32, TrackError::TrackTooLong);
         require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
 
-        track.signer = ctx.accounts.creator.key();
+        track.signer = ctx.accounts.signer.key();
         track.artist = artist.as_bytes().to_vec();
         track.cid = cid.as_bytes().to_vec();
         track.track_title = title.as_bytes().to_vec();
@@ -59,10 +59,10 @@ pub mod track_upload {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = creator, space = 174)]
+    #[account(init, payer = signer, space = 174)]
     pub track: Account<'info, Track>,
     #[account(mut)]
-    pub creator: Signer<'info>,
+    pub signer: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 

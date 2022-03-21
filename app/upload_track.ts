@@ -29,7 +29,7 @@ const main = async () => {
   }
   anchor.setProvider(anchor.Provider.env());
   const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
-  const creator = program.provider.wallet;
+  const signer = program.provider.wallet;
   const track = anchor.web3.Keypair.generate();
   let cid = args.cid ? args.cid : "";
   if (args.path) {
@@ -45,7 +45,7 @@ const main = async () => {
   //
   const tx = await program.rpc.initialize(cid, args.artist, args.title, {
     accounts: {
-      creator: creator.publicKey,
+      signer: signer.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
       track: track.publicKey,
     },

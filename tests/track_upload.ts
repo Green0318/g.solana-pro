@@ -8,7 +8,7 @@ import type { CID } from "ipfs-core";
 import * as assert from "assert";
 
 const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
-const creator = program.provider.wallet;
+const signer = program.provider.wallet;
 const track = anchor.web3.Keypair.generate();
 
 describe("track_upload", () => {
@@ -21,7 +21,7 @@ describe("track_upload", () => {
   it("Is initialized!", async () => {
     const tx = await program.rpc.initialize(cid, artist, track_title, {
       accounts: {
-        creator: creator.publicKey,
+        signer: signer.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
         track: track.publicKey,
       },
@@ -29,7 +29,7 @@ describe("track_upload", () => {
     });
     console.log("Your transaction signature", tx);
     console.log(`Track Key: ${track.publicKey}`);
-    console.log(`SIGNER: ${creator.publicKey}`);
+    console.log(`SIGNER: ${signer.publicKey}`);
   });
   it("Should match artist, track and cid", async () => {
     let trackState = await program.account.track.fetch(track.publicKey);
@@ -51,9 +51,9 @@ describe("track_update", () => {
     const tx = await program.rpc.update(new_cid, new_artist, new_title, {
       accounts: {
         track: track.publicKey,
-        signer: creator.publicKey,
+        signer: signer.publicKey,
       },
-      signers: creator instanceof (anchor.Wallet as any) ? [] : [creator],
+      signers: [],
     });
   });
   it("Should match updated track, title and cid", async () => {
