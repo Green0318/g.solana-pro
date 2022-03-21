@@ -59,6 +59,8 @@ E.g.
 yarn get_track -k D8sQycBUZkvpLM12bFpZ4GShb3tbMvPyXLe5J5boo85W
 ```
 
+*NOTE* - the downloaded track isnt the right thing. Needs to be fixed.
+
 ### Update Track 
 Update a track be passing it the existing public key and new values for CID, Title, Artist.
 
@@ -144,6 +146,7 @@ This would mean that for any production code length verification of the inputs w
 During update we check to make sure if the call has been signed by the original signer. This is done to ensure others can not modify tracks.
 
 ## Missing Stuff
+- Getting track - downloads a binary off IPFS which isnt what we want.
 - Vec types need better length control for any production use as this will cause the account to run out of space.
 
 ## Structure
