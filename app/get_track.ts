@@ -34,7 +34,7 @@ const main = async () => {
       for await (const chunk of node.files.read(file.cid)) {
         chunks.push(chunk);
       }
-      fs.writeFileSync(file.name, uint8ArrayConcat(chunks).toString());
+      fs.writeFileSync(file.name, uint8ArrayConcat(chunks));
     }
     node.stop();
   }
