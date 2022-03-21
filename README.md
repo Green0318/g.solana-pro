@@ -92,43 +92,7 @@ which ones you want to analyze.
 
     coderrect -e executable_name1,executable_name2 your_build_command_line
 
- 1) .coderrect/build/bpfel-unknown-unknown/release/deps/typenum-6788683e3de7b699.ll
- 2) .coderrect/build/bpfel-unknown-unknown/release/deps/track_upload.ll
- 3) .coderrect/build/bpfel-unknown-unknown/release/deps/thiserror-3ee8e79b90a2bf4b.ll
- 4) .coderrect/build/bpfel-unknown-unknown/release/deps/subtle-ee70282bc6584ee3.ll
- 5) .coderrect/build/bpfel-unknown-unknown/release/deps/solana_program-a9a71275af679776.ll
- 6) .coderrect/build/bpfel-unknown-unknown/release/deps/solana_frozen_abi-7fd8926a54421689.ll
- 7) .coderrect/build/bpfel-unknown-unknown/release/deps/sha3-824f1a3df2b461fb.ll
- 8) .coderrect/build/bpfel-unknown-unknown/release/deps/sha2-3d3c5f91f8a916ca.ll
- 9) .coderrect/build/bpfel-unknown-unknown/release/deps/serde_bytes-f97683795b10cd1a.ll
-10) .coderrect/build/bpfel-unknown-unknown/release/deps/serde-669c6373480ef40e.ll
-11) .coderrect/build/bpfel-unknown-unknown/release/deps/once_cell-ca09fe2fcbcf5f51.ll
-12) .coderrect/build/bpfel-unknown-unknown/release/deps/num_traits-7671ba1c5bade6c2.ll
-13) .coderrect/build/bpfel-unknown-unknown/release/deps/log-fff0aa7f98b329dd.ll
-14) .coderrect/build/bpfel-unknown-unknown/release/deps/lazy_static-809b40aac429888e.ll
-15) .coderrect/build/bpfel-unknown-unknown/release/deps/keccak-ac25e9c6d97c1dff.ll
-16) .coderrect/build/bpfel-unknown-unknown/release/deps/itertools-6f284c40990431ef.ll
-17) .coderrect/build/bpfel-unknown-unknown/release/deps/hashbrown-e9d3f1d102acb3ce.ll
-18) .coderrect/build/bpfel-unknown-unknown/release/deps/generic_array-91231c1bce772d5b.ll
-19) .coderrect/build/bpfel-unknown-unknown/release/deps/either-6eeb62e68a9b8e57.ll
-20) .coderrect/build/bpfel-unknown-unknown/release/deps/digest-c53b0353c49f6e62.ll
-21) .coderrect/build/bpfel-unknown-unknown/release/deps/crypto_common-6c083b911cb43656.ll
-22) .coderrect/build/bpfel-unknown-unknown/release/deps/constant_time_eq-7608d3c8c0a0311c.ll
-23) .coderrect/build/bpfel-unknown-unknown/release/deps/cfg_if-1643e4a2c6efb510.ll
-24) .coderrect/build/bpfel-unknown-unknown/release/deps/bytemuck-aacfe6a845c2869a.ll
-25) .coderrect/build/bpfel-unknown-unknown/release/deps/bv-de6554dcf95b9d6f.ll
-26) .coderrect/build/bpfel-unknown-unknown/release/deps/bs58-523e591a38f192af.ll
-27) .coderrect/build/bpfel-unknown-unknown/release/deps/borsh-3f193e13b3ee5674.ll
-28) .coderrect/build/bpfel-unknown-unknown/release/deps/block_buffer-1e39f02a522916f9.ll
-29) .coderrect/build/bpfel-unknown-unknown/release/deps/blake3-f009148686ac7c49.ll
-30) .coderrect/build/bpfel-unknown-unknown/release/deps/bincode-6560faddf0727fb3.ll
-31) .coderrect/build/bpfel-unknown-unknown/release/deps/base64-ee92f11b5395c52e.ll
-32) .coderrect/build/bpfel-unknown-unknown/release/deps/arrayvec-abc6f67bad21b925.ll
-33) .coderrect/build/bpfel-unknown-unknown/release/deps/arrayref-6f2c23b5a3d55b60.ll
-34) .coderrect/build/bpfel-unknown-unknown/release/deps/anchor_lang-1139dd39b4311351.ll
-35) .coderrect/build/bpfel-unknown-unknown/release/deps/ahash-98ec132da7fc0e40.ll
-
-Please select binaries by entering their ordinal numbers (e.g. 1,2,6):2
+..... (omitted output)
 
 Analyzing /home/anant/auduis/track_upload/.coderrect/build/bpfel-unknown-unknown/release/deps/track_upload.ll ...
  - ✔ [00m:00s] Loading IR From File                    
@@ -154,7 +118,7 @@ anant@desktop:~/auduis/track_upload$
 ## Tests
 The tests are written using mocha which is typical for anchor. 
 These tests directly test uploading a track and updating a track.
-To update the track we first need to get the uploaded track so it implicitly tests that as well.
+To update the track we first need to get the uploaded track so it implicitly tests that as well. We also test updating a track with a different signer and it fails.
 To run tests run: 
 `anchor test`
 
@@ -167,6 +131,7 @@ On the web3 side it provides convenient utilities to interact with solana progra
 The contract takes an account for the track that contains the CID, Artist, Track Title, and the signer. 
 #### Initialization
 The initilization logic accepts a track (Pub key for track account). We also pass in the Title, Artist and CID to be stored. These are presisted to the account.
+
 #### Update
 Update accepts modified CID, Artist, Title and modifies the track account.
 These are accepted as "Optional" By checking if the vecror is of size 0. Idealy this would be done using Option<String> but that was giving some issues with serialization.
@@ -179,7 +144,6 @@ This would mean that for any production code length verification of the inputs w
 During update we check to make sure if the call has been signed by the original signer. This is done to ensure others can not modify tracks.
 
 ## Missing Stuff
-- Downloaded tracks need to be set to their appropriate name by getting track metadata from IPFS
 - Vec types need better length control for any production use as this will cause the account to run out of space.
 
 ## Structure
