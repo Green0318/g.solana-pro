@@ -38,6 +38,10 @@ Options:
   -a, --artist                                            [string] [default: ""]
   -t, --title                                             [string] [default: ""]
 ```
+E.g.
+```
+yarn upload_track --path track.mp3 --title "My Sample" --artist "TrackArtist"
+```
 
 ### Get Track 
 We can get a track metadata (Artist, Title, CID) from Solana and also get the track from IPFS. This needs the public key from the previous step.
@@ -50,10 +54,31 @@ Options:
   -k, --key                                                  [string] [required]
   -d, --download                                       [boolean] [default: true]
 ```
+E.g.
+```
+yarn get_track -k D8sQycBUZkvpLM12bFpZ4GShb3tbMvPyXLe5J5boo85W
+```
 
 ### Update Track 
 Update a track be passing it the existing public key and new values for CID, Title, Artist.
-This command is not currently working since I have not integrated this with the wallet adaptor. Since this needs the owner of the track to sign the transaction. This has been tested in tests.
+
+```
+➜  track_upload git:(master) ✗ yarn update_track 
+
+Options:
+      --help     Show help                                             [boolean]
+      --version  Show version number                                   [boolean]
+  -k, --key                                                  [string] [required]
+  -c, --cid                                             [string] [default: null]
+  -p, --path                                            [string] [default: null]
+  -a, --artist                                            [string] [default: ""]
+  -t, --title                                             [string] [default: ""]
+```
+
+E.g.
+```
+yarn update_track -k D8sQycBUZkvpLM12bFpZ4GShb3tbMvPyXLe5J5boo85W -a "New Artist"
+```
 
 ## Soteria security analysis
 I ran soteria to ensure there we no vulnerabilities detected in my contract
@@ -154,7 +179,6 @@ This would mean that for any production code length verification of the inputs w
 During update we check to make sure if the call has been signed by the original signer. This is done to ensure others can not modify tracks.
 
 ## Missing Stuff
-- Update needs a wallet adapter to sign for the update
 - Downloaded tracks need to be set to their appropriate name by getting track metadata from IPFS
 - Vec types need better length control for any production use as this will cause the account to run out of space.
 
