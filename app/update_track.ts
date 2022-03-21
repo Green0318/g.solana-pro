@@ -44,8 +44,9 @@ const main = async () => {
   }
 
   let trackState = await program.account.track.fetch(key);
-  if (trackState.signer != signer.publicKey) {
+  if (trackState.signer.toString() != signer.publicKey.toString()) {
     console.error("Only the original creator of the track can update it.");
+    console.error(`TRACK signer ${trackState.signer}, Signer: ${signer.publicKey}`);
     process.exit(1);
   }
   const tx = await program.rpc.update(cid, args.artist, args.title, {
