@@ -7,7 +7,7 @@ import { TrackUpload } from "../target/types/track_upload";
 import fs from "fs";
 import type { CID } from "ipfs-core";
 import { isIPFS } from "ipfs-core";
-import { create, globSource } from "ipfs-http-client"
+import { create, globSource } from "ipfs-http-client";
 import { upload_file } from "./utils/ipfs_interact";
 
 const argv = yargs(process.argv.slice(2)).options({

@@ -26,7 +26,7 @@ const main = async () => {
     `TRACK: ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle}`
   );
   if (args.download) {
-  await get_file(`${trackState.cid}`)
+    await get_file(`${trackState.cid}`);
   }
 };
 
