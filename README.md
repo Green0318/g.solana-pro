@@ -156,16 +156,11 @@ The initilization logic accepts a track (Pub key for track account). We also pas
 Update accepts modified CID, Artist, Title and modifies the track account.
 These are accepted as "Optional" By checking if the vecror is of size 0. Idealy this would be done using Option<String> but that was giving some issues with serialization.
 
-#### `Vec<u8>` types
-The Cid, Track and artist are stored using Vectors that have a variable length. 
-This would mean that for any production code length verification of the inputs would be necessary to make sure the account does not overflow.
-
 #### The update logic
 During update we check to make sure if the call has been signed by the original signer. This is done to ensure others can not modify tracks.
 
 ## Missing Stuff
-- Getting track - downloads a binary off IPFS which isnt what we want.
-- Vec types need better length control for any production use as this will cause the account to run out of space.
+- String types need better length control for any production use as this will cause the account to run out of space.
 
 ## Structure
 - Anchor.toml defines the anchor project.

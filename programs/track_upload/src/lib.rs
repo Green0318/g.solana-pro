@@ -77,7 +77,7 @@ pub struct UpdateTrack<'info> {
 #[account]
 #[derive(Default)]
 pub struct Track {
-    pub signer: Pubkey,       //64    
+    pub signer: Pubkey,      //64
     pub cid: String,         //47
     pub artist: String,      //32
     pub track_title: String, //32
