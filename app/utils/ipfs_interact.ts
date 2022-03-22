@@ -6,7 +6,7 @@ import { create, globSource } from "ipfs-http-client";
 import { concat as uint8ArrayConcat } from "uint8arrays/concat";
 
 const infura_url = { url: "https://ipfs.infura.io:5001" };
-const infura_browse = "https://ipfs.infura.io/ipfs/";
+const infura_browse = "https://ipfs.infura.io/ipfs";
 
 export const upload_file = async (path: PathOrFileDescriptor) => {
   let cid = "";
@@ -41,6 +41,6 @@ export const get_file = async (track_cid: String) => {
   return cids;
 };
 
-export const get_infura_url = async(cid: String) => {
-    return `${infura_browse}/${cid}`
-}
+export const get_infura_url = async (cid: String) => {
+  return `${infura_browse}/${cid}`;
+};
