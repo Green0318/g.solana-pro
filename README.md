@@ -59,8 +59,6 @@ E.g.
 yarn get_track -k D8sQycBUZkvpLM12bFpZ4GShb3tbMvPyXLe5J5boo85W
 ```
 
-*NOTE* - the downloaded track isnt the right thing. Needs to be fixed.
-
 ### Update Track 
 Update a track be passing it the existing public key and new values for CID, Title, Artist.
 
@@ -82,6 +80,26 @@ E.g.
 yarn update_track -k D8sQycBUZkvpLM12bFpZ4GShb3tbMvPyXLe5J5boo85W -a "New Artist"
 ```
 
+### My Tracks
+Gets tracks uploaded by you
+```
+yarn my_tracks
+```
+
+Returns
+```
+Artist: 6TrackArtist, Title: 6 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+https://ipfs.infura.io/ipfs//QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+Artist: 11TrackArtist, Title: 11 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+https://ipfs.infura.io/ipfs//QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+Artist: 10TrackArtist, Title: 10 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+https://ipfs.infura.io/ipfs//QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+Artist: 15TrackArtist, Title: 15 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+https://ipfs.infura.io/ipfs//QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+Artist: 14TrackArtist, Title: 14 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+https://ipfs.infura.io/ipfs//QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+Artist: 8TrackArtist, Title: 8 My Sample ARTIST, cid: QmTdvKsDU76eB1BaL1s6Nh6uZRp3zDhxgJdWk7ZSdZSPzi
+```
 ## Soteria security analysis
 I ran soteria to ensure there we no vulnerabilities detected in my contract
 
