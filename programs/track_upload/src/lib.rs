@@ -77,11 +77,10 @@ pub struct UpdateTrack<'info> {
 #[account]
 #[derive(Default)]
 pub struct Track {
-    pub signer: Pubkey, 
-    pub cid: Vec<u8>,
-    pub artist: Vec<u8>,
-    pub track_title: Vec<u8>,
-
+    pub cid: Vec<u8>,         //47
+    pub artist: Vec<u8>,      //32
+    pub track_title: Vec<u8>, //32
+    pub signer: Pubkey,       //64
 }
 
 #[error_code]
