@@ -2,7 +2,8 @@
     "scripts": {
         "update_track": "node_modules/.bin/ts-node --project tsconfig.json app/update_track.ts",
         "upload_track": "node_modules/.bin/ts-node --project tsconfig.json app/upload_track.ts",
-        "get_track": "node_modules/.bin/ts-node --project tsconfig.json app/get_track.ts"
+        "get_track": "node_modules/.bin/ts-node --project tsconfig.json app/get_track.ts",
+        "my_tracks": "node_modules/.bin/ts-node --project tsconfig.json app/get_my_tracks.ts"     
     },
     "moduleResolution": "Node",
     "dependencies": {

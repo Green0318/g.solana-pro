@@ -15,7 +15,7 @@ export const upload_file = async (path: PathOrFileDescriptor) => {
   for await (const f of node.addAll([{ path: path, content: file }], {
     wrapWithDirectory: true,
   })) {
-    console.log(`${f.path ? f.path : "dir"}: ${infura_browse}/${f.cid}, `);
+    console.log(`${f.path ? f.path : "dir"}: ${infura_browse}/${f.cid}`);
     // Last CID is the one to the directory
     cid = f.cid.toString();
   }
@@ -40,3 +40,7 @@ export const get_file = async (track_cid: String) => {
   node.stop();
   return cids;
 };
+
+export const get_infura_url = async(cid: String) => {
+    return `${infura_browse}/${cid}`
+}
