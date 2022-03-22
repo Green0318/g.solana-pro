@@ -6,7 +6,7 @@ import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { TrackUpload } from "../target/types/track_upload";
 import fs from "fs";
 import { IPFS, create } from "ipfs-core";
-import { get_file } from "./utils/ipfs_interact";
+import { concat as uint8ArrayConcat } from "uint8arrays/concat";
 
 const argv = yargs(process.argv.slice(2))
   .describe({ key: "Get the track from Solana and download it." })
@@ -25,10 +25,21 @@ const main = async () => {
     `TRACK: ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle}`
   );
   if (args.download) {
-    get_file(`${trackState.cid}`);
+    const node = await create();
+    const cid = String(trackState.cid);
+    // load directory and write out each track
+    for await (const file of node.ls(cid)) {
+      console.log(`$cid: ${cid}, name: ${file.name}, path: ${file.path}, fild cid: ${file.cid}, ${file.type}`)
+      const chunks = [];
+      for await (const chunk of node.cat(file.cid)) {
+        chunks.push(chunk)
+      }
+      fs.writeFileSync(file.name, uint8ArrayConcat(chunks))
+    }
+    node.stop();
   }
 };
 
 main().then(() => {
-  console.log("Read track successfully.");
+  console.log("Downloaded track successfully.");
 });
