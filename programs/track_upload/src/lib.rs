@@ -22,7 +22,11 @@ pub mod track_upload {
         track.artist = artist;
         track.cid = cid;
         track.track_title = title;
-
+        emit!(TrackEvent::new(
+            &track.cid,
+            &track.artist,
+            &track.track_title
+        ));
         Ok(())
     }
 
@@ -53,6 +57,11 @@ pub mod track_upload {
         if title.chars().count() > 0 {
             track.track_title = title
         };
+        emit!(TrackEvent::new(
+            &track.cid,
+            &track.artist,
+            &track.track_title
+        ));
         Ok(())
     }
 }
@@ -83,10 +92,31 @@ pub struct Track {
     pub track_title: String, //32
 }
 
+#[event]
+pub struct TrackEvent {
+    pub cid: String,
+    pub artist: String,
+    pub track_title: String,
+}
+
+impl TrackEvent {
+    pub fn new(cid: &str, artist: &str, title: &str) -> TrackEvent {
+        TrackEvent {
+            cid: cid.to_string(),
+            artist: artist.to_string(),
+            track_title: title.to_string(),
+        }
+    }
+}
+
 #[error_code]
 pub enum TrackError {
+    #[msg("Only the original signer can update tracks.")]
     UnauthorizedUser,
+    #[msg("Track should be up to 32 characters")]
     TrackTooLong,
+    #[msg("Artist should be up to 32 characters")]
     ArtistTooLong,
+    #[msg("CID is not valid")]
     InvalidCID,
 }
