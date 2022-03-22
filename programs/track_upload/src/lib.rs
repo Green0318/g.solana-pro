@@ -19,9 +19,9 @@ pub mod track_upload {
         require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
 
         track.signer = ctx.accounts.signer.key();
-        track.artist = artist.as_bytes().to_vec();
-        track.cid = cid.as_bytes().to_vec();
-        track.track_title = title.as_bytes().to_vec();
+        track.artist = artist;
+        track.cid = cid;
+        track.track_title = title;
 
         Ok(())
     }
@@ -45,13 +45,13 @@ pub mod track_upload {
         require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
 
         if cid.chars().count() > 0 {
-            track.cid = cid.as_bytes().to_vec()
+            track.cid = cid
         };
         if artist.chars().count() > 0 {
-            track.artist = artist.as_bytes().to_vec()
+            track.artist = artist
         };
         if title.chars().count() > 0 {
-            track.track_title = title.as_bytes().to_vec()
+            track.track_title = title
         };
         Ok(())
     }
@@ -77,10 +77,10 @@ pub struct UpdateTrack<'info> {
 #[account]
 #[derive(Default)]
 pub struct Track {
-    pub cid: Vec<u8>,         //47
-    pub artist: Vec<u8>,      //32
-    pub track_title: Vec<u8>, //32
-    pub signer: Pubkey,       //64
+    pub signer: Pubkey,       //64    
+    pub cid: String,         //47
+    pub artist: String,      //32
+    pub track_title: String, //32
 }
 
 #[error_code]
