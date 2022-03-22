@@ -5,10 +5,11 @@ import { Program } from "@project-serum/anchor";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { TrackUpload } from "../target/types/track_upload";
 import fs from "fs";
-import { IPFS, create } from "ipfs-core";
+import { IPFS, create, globSource } from "ipfs-core";
 import type { CID } from "ipfs-core";
 import { string } from "yargs";
 import { isIPFS } from "ipfs-core";
+import { upload_file } from "./utils/ipfs_interact";
 
 const argv = yargs(process.argv.slice(2))
   .describe({ key: "Update solana track entry." })
@@ -34,16 +35,7 @@ const main = async () => {
   let cid = args.cid ? args.cid : "";
   if (args.path) {
     const node = await create();
-    const file = fs.readFileSync(args.path);
-    const file_upload = await node.add(
-      {
-        path: args.path,
-        content: file.buffer,
-      },
-      { wrapWithDirectory: true }
-    );
-    cid = file_upload.cid.toString();
-    await node.stop();
+    cid = upload_file(args.path);
   }
 
   let trackState = await program.account.track.fetch(key);

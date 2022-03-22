@@ -5,8 +5,10 @@ import { Program } from "@project-serum/anchor";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { TrackUpload } from "../target/types/track_upload";
 import fs from "fs";
-import { IPFS, create, isIPFS } from "ipfs-core";
 import type { CID } from "ipfs-core";
+import { isIPFS } from "ipfs-core";
+import { create, globSource } from "ipfs-http-client"
+import { upload_file } from "./utils/ipfs_interact";
 
 const argv = yargs(process.argv.slice(2)).options({
   cid: { type: "string", default: null, alias: "c" },
@@ -31,21 +33,11 @@ const main = async () => {
   const signer = program.provider.wallet;
   const track = anchor.web3.Keypair.generate();
   let cid = args.cid ? args.cid : "";
+
   if (args.path) {
-    const node = await create();
-    const file = fs.readFileSync(args.path);
-    const file_upload = await node.add(
-      {
-        path: args.path,
-        content: file.buffer,
-      },
-      // wrap in directory so we can fetch track name later
-      { wrapWithDirectory: true }
-    );
-    cid = file_upload.cid.toString();
-    await node.stop();
+    cid = upload_file(args.path)
   }
-  //
+
   const tx = await program.rpc.initialize(cid, args.artist, args.title, {
     accounts: {
       signer: signer.publicKey,

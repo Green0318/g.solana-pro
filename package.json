@@ -11,6 +11,7 @@
         "@types/yargs": "^17.0.9",
         "ipfs-api": "^26.1.2",
         "ipfs-core": "^0.14.1",
+        "ipfs-http-client": "^56.0.1",
         "ts-node": "^10.7.0",
         "yargs": "^17.3.1"
     },
