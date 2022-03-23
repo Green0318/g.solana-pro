@@ -9,19 +9,23 @@ pub mod track_upload {
     pub fn initialize(
         ctx: Context<Initialize>,
         cid: String,
-        artist: String,
-        title: String,
+        artist: Option<String>,
+        title: Option<String>,
     ) -> Result<()> {
         let track = &mut ctx.accounts.track;
         // Validate Lengths
         require!(cid.chars().count() <= 47, TrackError::InvalidCID);
-        require!(artist.chars().count() <= 32, TrackError::TrackTooLong);
-        require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
-
         track.signer = ctx.accounts.signer.key();
-        track.artist = artist;
         track.cid = cid;
-        track.track_title = title;
+        if let Some(a) = artist {
+            require!(a.chars().count() <= 32, TrackError::TrackTooLong);
+            track.artist = a;
+        };
+        if let Some(t) = title {
+                require!(t.chars().count() <= 32, TrackError::ArtistTooLong);
+                track.track_title = t;
+            };
+
         emit!(TrackEvent::new(
             &track.cid,
             &track.artist,
@@ -34,9 +38,9 @@ pub mod track_upload {
     // running into issues with serialization
     pub fn update(
         ctx: Context<UpdateTrack>,
-        cid: String,
-        artist: String,
-        title: String,
+        cid: Option<String>,
+        artist: Option<String>,
+        title: Option<String>,
     ) -> Result<()> {
         let track = &mut ctx.accounts.track;
         require!(
@@ -44,19 +48,18 @@ pub mod track_upload {
             TrackError::UnauthorizedUser
         );
         // Validate Lengths
-        require!(cid.chars().count() <= 47, TrackError::InvalidCID);
-        require!(artist.chars().count() <= 32, TrackError::TrackTooLong);
-        require!(title.chars().count() <= 32, TrackError::ArtistTooLong);
-
-        if cid.chars().count() > 0 {
-            track.cid = cid
-        };
-        if artist.chars().count() > 0 {
-            track.artist = artist
-        };
-        if title.chars().count() > 0 {
-            track.track_title = title
-        };
+        if let Some(c) = cid {
+            require!(c.chars().count() <= 47, TrackError::InvalidCID);
+            track.cid = c;
+        }
+        if let Some(a) = artist {
+            require!(a.chars().count() <= 32, TrackError::TrackTooLong);
+            track.artist = a;
+        }
+        if let Some(t) = title {
+            require!(t.chars().count() <= 32, TrackError::ArtistTooLong);            
+            track.track_title = t;
+        }
         emit!(TrackEvent::new(
             &track.cid,
             &track.artist,
