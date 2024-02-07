@@ -15,12 +15,14 @@ pub mod track_upload {
         let track = &mut ctx.accounts.track;
         // Validate Lengths
         require!(cid.chars().count() <= 47, TrackError::InvalidCID);
-        track.signer = ctx.accounts.signer.key();
+        track.signer = ctx.accounts.signer.key();   
         track.cid = cid;
+
         if let Some(a) = artist {
             require!(a.chars().count() <= 32, TrackError::TrackTooLong);
             track.artist = a;
         };
+        
         if let Some(t) = title {
                 require!(t.chars().count() <= 32, TrackError::ArtistTooLong);
                 track.track_title = t;
