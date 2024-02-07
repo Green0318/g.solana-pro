@@ -13,12 +13,15 @@ import { upload_file } from "./utils/ipfs_interact";
 const argv = yargs(process.argv.slice(2)).options({
   cid: { type: "string", default: null, alias: "c" },
   path: { type: "string", default: null, alias: "p" },
+
   artist: { type: "string", default: "", alias: "a" },
   title: { type: "string", default: "", alias: "t" },
+
 }).argv;
 
 const main = async () => {
   const args = await argv;
+
   if (!args.cid && !args.path) {
     console.error("Either path or cid need to be provided");
     process.exit(1);
@@ -29,6 +32,7 @@ const main = async () => {
     process.exit(1);
   }
   anchor.setProvider(anchor.Provider.env());
+
   const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
   const signer = program.provider.wallet;
   const track = anchor.web3.Keypair.generate();
@@ -38,6 +42,7 @@ const main = async () => {
     cid = await upload_file(args.path);
   }
 
+  
   const tx = await program.rpc.initialize(cid, args.artist, args.title, {
     accounts: {
       signer: signer.publicKey,

@@ -21,15 +21,16 @@ const main = async () => {
   anchor.setProvider(anchor.Provider.env());
   const program = anchor.workspace.TrackUpload as Program<TrackUpload>;
   const key = new anchor.web3.PublicKey(args.key);
+
   let trackState = await program.account.track.fetch(key);
   console.log(
     `TRACK: ${trackState.artist}, ${trackState.cid}, ${trackState.trackTitle}`
   );
-  if (args.download) {
+  if (args.download)  {
     await get_file(`${trackState.cid}`);
   }
 };
 
-main().then(() => {
+main().then (() => {
   console.log("Downloaded track successfully.");
 });
